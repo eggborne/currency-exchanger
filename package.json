@@ -12,14 +12,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/eggborne/webpack-5-template.git"
+    "url": "git+https://github.com/eggborne/currency-exchanger.git"
   },
   "author": "mike@mikedonovan.dev",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/eggborne/webpack-5-template/issues"
+    "url": "https://github.com/eggborne/currency-exchanger/issues"
   },
-  "homepage": "https://github.com/eggborne/webpack-5-template#readme",
+  "homepage": "https://github.com/eggborne/currency-exchanger#readme",
   "jest": {
     "reporters": [
       "default",
@@ -44,6 +44,7 @@
   "devDependencies": {
     "css-loader": "^6.7.3",
     "css-minimizer-webpack-plugin": "^4.2.2",
+    "dotenv-webpack": "^8.0.1",
     "eslint": "^8.33.0",
     "eslint-webpack-plugin": "^4.0.0",
     "html-minimizer-webpack-plugin": "^4.3.0",
