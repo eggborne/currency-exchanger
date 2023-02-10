@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const HtmlMinimizerPlugin = require("html-minimizer-webpack-plugin");
 const ESLintPlugin = require('eslint-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 
 module.exports = {
   mode: 'development',
@@ -49,6 +50,7 @@ module.exports = {
     new ESLintPlugin({
       fix: true,
     }),
+    new Dotenv(),
   ],
   output: {
     filename: '[name].bundle.js',
