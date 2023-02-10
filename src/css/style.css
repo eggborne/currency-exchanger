@@ -10,3 +10,23 @@ body {
 p {
   font-size: 2rem;
 }
+
+#server-message {
+  font-size: 1rem;
+  opacity: 0.75;
+  font-weight: bold;
+  color: red;
+}
+
+#server-message > p {
+  all: inherit;
+}
+
+#debug {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  z-index: 12;
+  font-size: 1.5rem;
+  color: green;
+}

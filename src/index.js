@@ -1,6 +1,7 @@
 import './css/style.css';
+import CurrencyExchanger from './js/CurrencyExchanger';
 
-window.addEventListener('load', () => {
-  document.body.innerHTML = '<p>Guacamole</p>';
+window.addEventListener('load', async () => {
+  new CurrencyExchanger().buildCachedData();
 });
 
