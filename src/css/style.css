@@ -1,6 +1,7 @@
 :root {
   --header-height: 8rem;
   --header-color: #435b40;
+  --accent-color: #506a4d;
   --bg-color: var(--header-color);
   --text-color: #ffffff9c;
   --button-color: #8cd7737e;
@@ -26,12 +27,13 @@ body {
   background-color: var(--bg-color);
   color: var(--text-color);
   text-shadow: 0 0 0.25rem rgba(0, 0, 0, 0.7);
+  overflow: hidden;
 }
 
 input, button, select, option {
   padding: 1rem 0.5rem;
   max-width: 100%;
-  background-color: transparent;
+  background-color: var(--header-color);
   color: inherit;
   font-size: 1.25rem;
   font-weight: inherit;
@@ -115,6 +117,12 @@ form {
   padding: 0.325rem;
 }
 
+#base-amount-input::placeholder {
+  font-size: 1.5rem;
+  color: #aaaaaa94;
+  text-shadow: none;
+}
+
 #output-area > label {
   position: absolute;
   bottom: 0;
@@ -127,7 +135,6 @@ form {
 
 #output-area > input {
   pointer-events: none;
-  
 }
 
 form > .region-area {
@@ -143,6 +150,7 @@ form > .region-area {
 .region-area select {
   border-radius: 0.5rem;
   max-height: var(--header-height);
+  background-color: var(--accent-color);
 }
 
 .region-area label {
@@ -169,7 +177,7 @@ form button {
   font-size: 1.5rem;
   align-self: center;
   justify-self: center;
-  padding: 0 4rem;
+  padding: 0 6rem;
   height: 6rem;
 }
 
@@ -253,6 +261,12 @@ form select {
     --bg-color: #9ab59a;
   }
   
+  #base-amount-input,
+  #base-currency-input,
+  #target-currency-input {
+    max-height: unset;
+  }
+
   h1 {
     font-size: 2rem;
   }
@@ -269,6 +283,10 @@ form select {
     display: flex;
   }
 
+  .full-width-input {
+    margin: 0;
+  }
+
   .full-width-input > label {
     font-size: 1.5rem;
   }
@@ -283,7 +301,7 @@ form select {
     grid-template-columns: 1fr 0.25fr 0.25fr 1fr;
     grid-template-rows: 6rem 1fr 0.8fr 0.8fr;
     gap: 2rem 0;
-    padding: 4rem 3rem;
+    padding: 4rem 4rem;
     border-radius: 0.75rem;
   }
 

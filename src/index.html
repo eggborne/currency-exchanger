@@ -12,7 +12,7 @@
     <form>
       <div class="full-width-input" id="amount-input-area">
         <label for="base-amount-input">Amount</label>
-        <input type="number" id="base-amount-input" name="base-amount-input">
+        <input min="0" placeholder="Enter amount..." type="number" id="base-amount-input" name="base-amount-input">
       </div>
       <div class="region-area" id="base-area">
         <label class="code-label" for="base-currency-input">from</label>
@@ -38,7 +38,7 @@
     <button type="submit">Convert</button>
     <div class="full-width-input" id="output-area">
       <label for="converted-output">Converted</label>
-      <input type="text" id="converted-output" name="converted-output">
+      <input readonly type="number" id="converted-output" name="converted-output">
     </div>
     <div id="server-message"></div>
   </form>
