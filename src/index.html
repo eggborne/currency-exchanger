@@ -9,15 +9,22 @@
 <body>
   <header><h1>Currency Converter</h1></header>
   <main>
-    <form>
+    <form id="exchange-form">
       <div class="full-width-input" id="amount-input-area">
         <label for="base-amount-input">Amount</label>
-        <input min="0" placeholder="Enter amount..." type="number" id="base-amount-input" name="base-amount-input">
+        <input min="0" placeholder="Enter USD..." type="number" id="base-amount-input" name="base-amount-input">
       </div>
       <div class="region-area" id="base-area">
         <label class="code-label" for="base-currency-input">from</label>
         <select id="base-currency-input" name="base-currency-input">
-          <option selected name="base-currency-input" value="AUD">USD</option>
+          <option selected name="base-currency-input" value="USD">USD</option>
+          <option name="target-currency-input" value="AUD">AUD</option>
+          <option name="base-currency-input" value="BGN">BGN</option>
+          <option name="base-currency-input" value="CAD">CAD</option>
+          <option name="base-currency-input" value="CHF">CHF</option>
+          <option name="base-currency-input" value="CNY">CNY</option>
+          <option name="base-currency-input" value="EGP">EGP</option>
+          <option name="base-currency-input" value="EUR">EUR</option>
         </select>
       </div>
       <div class="arrow-container">        
@@ -26,6 +33,7 @@
       <div class="region-area" id="target-area">
         <label class="code-label" for="target-currency-input">to</label>
         <select id="target-currency-input" name="target-currency-input">
+          <option name="base-currency-input" value="USD">USD</option>
           <option selected name="target-currency-input" value="AUD">AUD</option>
           <option name="target-currency-input" value="BGN">BGN</option>
           <option name="target-currency-input" value="CAD">CAD</option>
@@ -43,5 +51,6 @@
     <div id="server-message"></div>
   </form>
   </main>
+  <footer></footer>
 </body>
 </html>

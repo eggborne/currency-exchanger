@@ -8,7 +8,7 @@
   --dark-shade: #00000022;
   --form-width: 100%;
   --form-height: calc(100vh - (var(--header-height) * 0));
-
+  
 }
 
 *, * *, * * * {
@@ -113,12 +113,12 @@ form {
   position: absolute;
   translate: 0.5rem -50%;
   background-color: var(--header-color);
-  font-size: 1.25rem;
+  font-size: 1.325rem;
   padding: 0.325rem;
 }
 
 #base-amount-input::placeholder {
-  font-size: 1.5rem;
+  font-size: 60%;
   color: #aaaaaa94;
   text-shadow: none;
 }
@@ -141,21 +141,23 @@ form > .region-area {
   grid-column-end: span 2;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   padding: 1rem 0.75rem;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
+  gap: 1rem;
 }
 
 .region-area select {
   border-radius: 0.5rem;
   max-height: var(--header-height);
   background-color: var(--accent-color);
+  padding-left: 1rem;
 }
 
 .region-area label {
   text-align: center;
-  font-size: 1.25rem;
+  font-size: 1.5rem;
 }
 
 #target-area {
@@ -174,10 +176,10 @@ form button {
   grid-column-end: span 4;
   grid-row-start: 3;
   background-color: var(--button-color);
-  font-size: 1.5rem;
+  font-size: 2rem;
   align-self: center;
   justify-self: center;
-  padding: 0 6rem;
+  padding: 0 15%;
   height: 6rem;
 }
 
@@ -246,6 +248,13 @@ form select {
   all: inherit;
 }
 
+footer {
+  height: 5rem;
+  background-color: var(--dark-shade);
+
+  /* z-index: 2; */
+}
+
 #base-amount-input,
 #base-currency-input,
 #target-currency-input {
@@ -258,7 +267,7 @@ form select {
     --form-width: 85vmin;
     --form-height: 85vmin;
     --header-height: 6rem;
-    --bg-color: #9ab59a;
+    --bg-color: #7f857f;
   }
   
   #base-amount-input,
@@ -292,26 +301,13 @@ form select {
   }
 
   form {
-    width: var(--form-width);
-    height: var(--form-height);
-    max-height: 84vh;
-    min-height: calc(var(--header-height) * 5);
-    background-color: var(--header-color);
-    display: grid;
-    grid-template-columns: 1fr 0.25fr 0.25fr 1fr;
-    grid-template-rows: 6rem 1fr 0.8fr 0.8fr;
-    gap: 2rem 0;
     padding: 4rem 4rem;
-    border-radius: 0.75rem;
   }
 
   form > .region-area {
     grid-column-end: span 1;
     border-radius: 0.5rem !important;
-  }
-
-  .region-area label {
-    font-size: 1.5rem;
+    padding: 1rem 0;
   }
 
   form button {

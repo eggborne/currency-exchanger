@@ -3,27 +3,24 @@ import ExchangeService from "./ExchangeService";
 export default class CurrencyExchanger {
   constructor() {
     this.exchangeService = new ExchangeService();
+
+    window.addEventListener('load', async () => {
+      await this.buildCachedData();
+      document.getElementById('exchange-form').addEventListener('submit', async e => {
+        e.preventDefault();
+        let baseAmount = document.getElementById('base-amount-input').value;
+        let baseRegion = document.getElementById('base-currency-input').value;
+        let targetRegion = document.getElementById('target-currency-input').value;
+        let convertedAmount = await this.convertCurrency(baseRegion, targetRegion, baseAmount);
+        document.getElementById('converted-output').value = convertedAmount;
+      });
+    });
+
   }
 
   get cachedData() {
     let data = JSON.parse(sessionStorage.getItem('currency_exchange_data'));
     return data;
-  }
-
-  get currentBaseRegion() {
-    return document.getElementById('base-currency-input').value;
-  }
-
-  get currentTargetRegion() {
-    return document.getElementById('target-currency-input').value;
-  }
-
-  set currentBaseRegion(newRegion) {
-    
-  }
-
-  set currentTargetRegion(newRegion) {
-    
   }
 
   cachedEntryForRegion(regionCode) {
