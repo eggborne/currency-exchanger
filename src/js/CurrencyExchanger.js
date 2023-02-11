@@ -3,44 +3,82 @@ import ExchangeService from "./ExchangeService";
 export default class CurrencyExchanger {
   constructor() {
     this.exchangeService = new ExchangeService();
-    this.sessionCache = sessionStorage;
   }
 
   get cachedData() {
-    let parsedData = JSON.parse(this.sessionCache.getItem('currency_exchange_data'));
-    return parsedData;
+    let data = JSON.parse(sessionStorage.getItem('currency_exchange_data'));
+    return data;
+  }
+
+  cachedEntryForRegion(regionCode) {
+    return this.cachedData.filter(entry => entry.code === regionCode)[0] || undefined;
+  }
+
+  cachedExchangeRateForRegions(baseCode, targetCode) {
+    return (this.cachedEntryForRegion(baseCode).exchangeRates &&
+      this.cachedEntryForRegion(baseCode).exchangeRates[targetCode]) || undefined;
+  }
+
+  async convertCurrency(baseCode, targetCode, baseAmount) {
+    let baseInfo = this.cachedEntryForRegion(targetCode);
+    if (baseInfo) {
+      let exchangeRate = await this.cachedExchangeRateForRegions(baseCode, targetCode);
+      if (!exchangeRate) {
+        exchangeRate = await this.cacheExchangeRate(baseCode, targetCode);
+      }
+      return (baseAmount * exchangeRate).toFixed(2);
+    } else {
+      // show error message 'region not found' etc.
+    }
   }
 
   async buildCachedData() {
-    this.cacheRegionInfo();
+    await this.cacheRegionInfo();
+    await this.cacheAllExchangeRatesForRegion(['USD']);
   }
 
   async cacheRegionInfo() {
     let response = await this.exchangeService.getSupportedCodes();
+    let output;
     if (response.supported_codes) {
       if (response.supported_codes.length > 0) {
         let regionInfoList = [];
         response.supported_codes.forEach(codeArr => {
           let code = codeArr[0];
-          let regionName = codeArr[1].split(' ')[0];
-          let currencyName = codeArr[1].split(' ')[1];
-          let regionInfoObj = {
-            code: code,
-            regionName: regionName,
-            currencyName: currencyName,
-          };
-          regionInfoList.push(regionInfoObj);
+          let currencyName = codeArr[1];
+          regionInfoList.push({ code, currencyName });
         });
-        this.sessionCache.setItem('currency_exchange_data', JSON.stringify(regionInfoList));
-        console.log('this.cachedData after region call:', this.cachedData);
+        sessionStorage.setItem('currency_exchange_data', JSON.stringify(regionInfoList));
+        output = regionInfoList;
       } else {
-        return [];
+        throw new Error(`Region call succeeded but returned empty array`);
       }
     }
+    return output;
+  }
 
-    let queryCount = parseInt(localStorage.getItem('currency_queries')) + 1 || 1;
-    document.getElementById('debug').innerHTML = `<p>${queryCount}</p>`;
-    localStorage.setItem('currency_queries', queryCount);
+  async cacheExchangeRate(baseCode, targetCode) {
+    let cachedData = [...this.cachedData];
+    let exchangeRate = await this.exchangeService.getExchangeRate(baseCode, targetCode);    
+    cachedData.forEach(item => {
+      if (baseCode === item.code) {
+        if (!item.exchangeRates) {
+          item.exchangeRates = {};
+        }
+        item.exchangeRates[targetCode] = exchangeRate;
+      }
+    });
+    return exchangeRate;
+  }
 
+  async cacheAllExchangeRatesForRegion(codeList) { // takes > 30 seconds to do all regions
+    let cachedData = [...this.cachedData];
+    let ratesObj = await this.exchangeService.getAllExchangeRates(codeList);
+    cachedData.forEach(item => {
+      if (codeList.includes(item.code)) {
+        item.exchangeRates = ratesObj[item.code];
+      }
+    });
+    sessionStorage.setItem('currency_exchange_data', JSON.stringify(cachedData));
   }
 }
