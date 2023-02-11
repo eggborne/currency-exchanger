@@ -3,10 +3,45 @@
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
   <title>Currency Exchanger</title>
+</head>
 <body>
-  <div id="server-message"></div>
-  
+  <header><h1>Currency Converter</h1></header>
+  <main>
+    <form>
+      <div class="full-width-input" id="amount-input-area">
+        <label for="base-amount-input">Amount</label>
+        <input type="number" id="base-amount-input" name="base-amount-input">
+      </div>
+      <div class="region-area" id="base-area">
+        <label class="code-label" for="base-currency-input">from</label>
+        <select id="base-currency-input" name="base-currency-input">
+          <option selected name="base-currency-input" value="AUD">USD</option>
+        </select>
+      </div>
+      <div class="arrow-container">        
+        <div class="arrow"></div>
+      </div>
+      <div class="region-area" id="target-area">
+        <label class="code-label" for="target-currency-input">to</label>
+        <select id="target-currency-input" name="target-currency-input">
+          <option selected name="target-currency-input" value="AUD">AUD</option>
+          <option name="target-currency-input" value="BGN">BGN</option>
+          <option name="target-currency-input" value="CAD">CAD</option>
+          <option name="target-currency-input" value="CHF">CHF</option>
+          <option name="target-currency-input" value="CNY">CNY</option>
+          <option name="target-currency-input" value="EGP">EGP</option>
+          <option name="target-currency-input" value="EUR">EUR</option>
+        </select>
+      </div>
+    <button type="submit">Convert</button>
+    <div class="full-width-input" id="output-area">
+      <label for="converted-output">Converted</label>
+      <input type="text" id="converted-output" name="converted-output">
+    </div>
+    <div id="server-message"></div>
+  </form>
+  </main>
 </body>
 </html>

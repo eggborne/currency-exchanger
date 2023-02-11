@@ -19,6 +19,7 @@ export default class ExchangeService {
     let statusCode = response.status;
     response = await response.json();
     if (statusCode !== 200) {
+      this.displayErrorMessage(statusCode, response);
       throw new Error(`${statusCode}: ${response['error-type']}`);
     } else {
       let exchangeRate = response.conversion_rate;
@@ -46,7 +47,7 @@ export default class ExchangeService {
     let errorInfo = jsonResponse['extra-info'];
     document.getElementById('server-message').innerHTML = `
         <p>ERROR ${statusCode}: ${errorType}</p>
-        <p>${errorInfo}</p>
+        <p>${errorInfo || '&nbsp;'}</p>
       `;
   }
 }

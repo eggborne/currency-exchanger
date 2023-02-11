@@ -10,12 +10,29 @@ export default class CurrencyExchanger {
     return data;
   }
 
+  get currentBaseRegion() {
+    return document.getElementById('base-currency-input').value;
+  }
+
+  get currentTargetRegion() {
+    return document.getElementById('target-currency-input').value;
+  }
+
+  set currentBaseRegion(newRegion) {
+    
+  }
+
+  set currentTargetRegion(newRegion) {
+    
+  }
+
   cachedEntryForRegion(regionCode) {
     return this.cachedData.filter(entry => entry.code === regionCode)[0] || undefined;
   }
 
   cachedExchangeRateForRegions(baseCode, targetCode) {
-    return (this.cachedEntryForRegion(baseCode).exchangeRates &&
+    return (this.cachedEntryForRegion(baseCode) &&
+      this.cachedEntryForRegion(baseCode).exchangeRates &&
       this.cachedEntryForRegion(baseCode).exchangeRates[targetCode]) || undefined;
   }
 
@@ -27,8 +44,6 @@ export default class CurrencyExchanger {
         exchangeRate = await this.cacheExchangeRate(baseCode, targetCode);
       }
       return (baseAmount * exchangeRate).toFixed(2);
-    } else {
-      // show error message 'region not found' etc.
     }
   }
 
