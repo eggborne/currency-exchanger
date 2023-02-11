@@ -3,6 +3,8 @@ import ExchangeService from "./ExchangeService";
 export default class CurrencyExchanger {
   constructor() {
     this.exchangeService = new ExchangeService();
+    this.cacheCount = 0;
+    this.callCount = 0;
 
     window.addEventListener('load', async () => {
       await this.buildCachedData();
@@ -22,7 +24,6 @@ export default class CurrencyExchanger {
         document.getElementById('converted-output').value = convertedAmount;
       });
     });
-
   }
 
   get cachedData() {
@@ -43,9 +44,12 @@ export default class CurrencyExchanger {
   async convertCurrency(baseCode, targetCode, baseAmount) {
     let baseInfo = this.cachedEntryForRegion(targetCode);
     if (baseInfo) {
-      let exchangeRate = await this.cachedExchangeRateForRegions(baseCode, targetCode);
+      let exchangeRate = this.cachedExchangeRateForRegions(baseCode, targetCode);
       if (!exchangeRate) {
+        console.warn(baseCode, ' > ', targetCode, 'NOT IN CACHE! CALLING API...');
         exchangeRate = await this.cacheExchangeRate(baseCode, targetCode);
+      } else {
+        console.warn('USING CACHED VALUE FOR EXCHANGE:', baseCode, ' > ', targetCode);
       }
       return (baseAmount * exchangeRate).toFixed(2);
     }
@@ -53,12 +57,15 @@ export default class CurrencyExchanger {
 
   async buildCachedData() {
     let regionInfo = await this.cacheRegionInfo();
+    document.querySelector('footer > p:first-child').innerHTML = `${regionInfo.length} currencies ready`;
     this.buildRegionDropdowns(regionInfo);
     await this.cacheAllExchangeRatesForRegion(['USD']);
+    document.querySelector('footer > p:last-child').innerHTML = `${this.cacheCount} rates cached in ${this.callCount} calls`;
   }
 
   async cacheRegionInfo() {
     let response = await this.exchangeService.getSupportedCodes();
+    this.callCount++;
     let output;
     if (response.supported_codes) {
       if (response.supported_codes.length > 0) {
@@ -79,27 +86,33 @@ export default class CurrencyExchanger {
 
   async cacheExchangeRate(baseCode, targetCode) {
     let cachedData = [...this.cachedData];
-    let exchangeRate = await this.exchangeService.getExchangeRate(baseCode, targetCode);    
+    let exchangeRate = await this.exchangeService.getExchangeRate(baseCode, targetCode); 
+    this.callCount++;
     cachedData.forEach(item => {
       if (baseCode === item.code) {
         if (!item.exchangeRates) {
           item.exchangeRates = {};
         }
         item.exchangeRates[targetCode] = exchangeRate;
+        this.cacheCount++;
       }
     });
-    this.cachedData = cachedData;
+    document.querySelector('footer > p:last-child').innerHTML = `${this.cacheCount} rates cached in ${this.callCount} calls`;
+    sessionStorage.setItem('currency_exchange_data', JSON.stringify(cachedData));
     return exchangeRate;
   }
 
-  async cacheAllExchangeRatesForRegion(codeList) { // takes > 30 seconds to do all regions
+  async cacheAllExchangeRatesForRegion(codeList) {
     let cachedData = [...this.cachedData];
     let ratesObj = await this.exchangeService.getAllExchangeRates(codeList);
+    this.callCount++;
     cachedData.forEach(item => {
       if (codeList.includes(item.code)) {
         item.exchangeRates = ratesObj[item.code];
+        this.cacheCount += Object.keys(ratesObj[item.code]).length - 1;
       }
     });
+    
     sessionStorage.setItem('currency_exchange_data', JSON.stringify(cachedData));
   }
 
