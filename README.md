@@ -42,8 +42,11 @@ To output a production build to folder `dist/`, type:
 > npm run build
 
 To get an API key:
+
 > Visit [https://app.exchangerate-api.com/](ExchangeRate-API) and sign up for a free account
+
 > Check the 'Dashboard' for your API key
+
 > Place your API key in an .env file at the top level of your directory
 
 ## Known Bugs
