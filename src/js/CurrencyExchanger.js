@@ -75,16 +75,15 @@ export default class CurrencyExchanger {
   cacheReverseRates(regionCode) {
     let rateList = this.cachedEntryForRegion(regionCode).exchangeRates;
     for (const code in rateList) {
-      let usRate = 1 / rateList[code];
-      this.updateCachedItem(code, 'defaultRegionExchangeRate', usRate);
+      let defaultRate = 1 / rateList[code];
+      this.updateCachedItem(code, 'defaultRegionExchangeRate', defaultRate);
     }
   }
 
   convertCurrency(baseCode, targetCode, baseAmount) {
     if (!this.cachedEntryForRegion(baseCode)) {
       document.getElementById('server-message').innerHTML = `
-        <p>ERROR:</p>
-        <p>REGION ${baseCode} NOT FOUND</p>
+        <p>ERROR: REGION ${baseCode} NOT FOUND</p>
       `;
       return;
     }
