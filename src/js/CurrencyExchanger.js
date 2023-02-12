@@ -7,11 +7,14 @@ export default class CurrencyExchanger {
     this.callCount = 0;
 
     window.addEventListener('load', async () => {
+      document.documentElement.style.setProperty('--actual-height', window.innerHeight + 'px');
       await this.buildCachedData();
-      document.getElementById('base-currency-input').addEventListener('change', e => { 
+      document.getElementById('base-currency-input').addEventListener('change', async e => {
+        let currencyName = this.cachedEntryForRegion(e.target.value).currencyName;
+        document.querySelector('#amount-input-area > label').innerHTML = `${currencyName}`;
         document.getElementById('base-amount-input').placeholder = `Enter ${e.target.value}...`;
       });
-      document.getElementById('target-currency-input').addEventListener('change', e => {
+      document.getElementById('target-currency-input').addEventListener('change', async e => {
         let currencyName = this.cachedEntryForRegion(e.target.value).currencyName;
         document.querySelector('#output-area > label').innerHTML = `${currencyName}`;
       });
@@ -48,6 +51,7 @@ export default class CurrencyExchanger {
       if (!exchangeRate) {
         console.warn(baseCode, ' > ', targetCode, 'NOT IN CACHE! CALLING API...');
         exchangeRate = await this.cacheExchangeRate(baseCode, targetCode);
+        console.warn('GOT IT!');
       } else {
         console.warn('USING CACHED VALUE FOR EXCHANGE:', baseCode, ' > ', targetCode);
       }
@@ -56,11 +60,12 @@ export default class CurrencyExchanger {
   }
 
   async buildCachedData() {
+    let queryStarted = Date.now();
     let regionInfo = await this.cacheRegionInfo();
-    document.querySelector('footer > p:first-child').innerHTML = `${regionInfo.length} currencies ready`;
+    document.querySelector('footer > p:first-child').innerHTML = `${regionInfo.length} currencies listed in ${Date.now() - queryStarted}ms`;
     this.buildRegionDropdowns(regionInfo);
     await this.cacheAllExchangeRatesForRegion(['USD']);
-    document.querySelector('footer > p:last-child').innerHTML = `${this.cacheCount} rates cached in ${this.callCount} calls`;
+    document.querySelector('footer > p:last-child').innerHTML = `${this.cacheCount} rates cached (${this.callCount} calls)`;
   }
 
   async cacheRegionInfo() {
@@ -97,7 +102,7 @@ export default class CurrencyExchanger {
         this.cacheCount++;
       }
     });
-    document.querySelector('footer > p:last-child').innerHTML = `${this.cacheCount} rates cached in ${this.callCount} calls`;
+    document.querySelector('footer > p:last-child').innerHTML = `${this.cacheCount} rates cached (${this.callCount} calls)`;
     sessionStorage.setItem('currency_exchange_data', JSON.stringify(cachedData));
     return exchangeRate;
   }
@@ -125,7 +130,7 @@ export default class CurrencyExchanger {
       baseOption.name = 'base-currency-input';
       targetOption.name = 'target-currency-input';
       baseOption.value = targetOption.value = regionObj.code;
-      baseOption.innerHTML = targetOption.innerHTML = `${regionObj.code} - ${regionObj.currencyName}`;
+      baseOption.innerHTML = targetOption.innerHTML = `${regionObj.currencyName}`;
       baseElement.append(baseOption);
       targetElement.append(targetOption);
     }
