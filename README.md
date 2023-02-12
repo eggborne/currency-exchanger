@@ -13,6 +13,8 @@ A website that converts currency between those of different countries.
 * NPM
 * Webpack
 
+* API: [https://app.exchangerate-api.com/](ExchangeRate-API)
+
 ## Setup/Installation Instructions
 
 Open a terminal and clone this repository by typing:
