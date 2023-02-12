@@ -1,12 +1,9 @@
 export default class ExchangeService {
-  constructor() {
-    this.baseUrl = `https://v6.exchangerate-api.com/v6/${process.env.API_KEY}`;
-  }
-
+  
   // business logic
 
-  async getSupportedCodes() {
-    let response = await fetch(`${this.baseUrl}/codes`);
+  static async getSupportedCodes() {
+    let response = await fetch(`https://v6.exchangerate-api.com/v6/${process.env.API_KEY}/codes`);
     let statusCode = response.status;
     response = await response.json();
     if (statusCode !== 200) {
@@ -16,21 +13,8 @@ export default class ExchangeService {
     }
   }
 
-  async getExchangeRate(baseCode, targetCode) {
-    let response = await fetch(`${this.baseUrl}/pair/${baseCode}/${targetCode}`);
-    let statusCode = response.status;
-    response = await response.json();
-    if (statusCode !== 200) {
-      this.displayErrorMessage(statusCode, response);
-      throw new Error(`${statusCode}: ${response['error-type']}`);
-    } else {
-      let exchangeRate = response.conversion_rate;
-      return exchangeRate;
-    }
-  }
-
-  async getAllExchangeRates(regionCode) {
-    let response = await fetch(`${this.baseUrl}/latest/${regionCode}`);
+  static async getAllExchangeRates(regionCode) {
+    let response = await fetch(`https://v6.exchangerate-api.com/v6/${process.env.API_KEY}/latest/${regionCode}`);
     let statusCode = response.status;
     response = await response.json();
     if (statusCode !== 200) {
@@ -42,7 +26,7 @@ export default class ExchangeService {
 
   // UI logic
 
-  displayErrorMessage(statusCode, jsonResponse) {
+  static displayErrorMessage(statusCode, jsonResponse) {
     let errorType = jsonResponse['error-type'].split('-').join(' ').toUpperCase();
     let errorInfo = jsonResponse['extra-info'];
     document.getElementById('server-message').innerHTML = `

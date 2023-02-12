@@ -2,7 +2,6 @@ import ExchangeService from "./ExchangeService";
 
 export default class CurrencyExchanger {
   constructor() {
-    this.exchangeService = new ExchangeService();
     this.defaultBaseRegion = 'USD';
     this.defaultTargetRegion = 'JPY';
 
@@ -45,7 +44,7 @@ export default class CurrencyExchanger {
   }
 
   async cacheRegionInfo() {
-    let response = await this.exchangeService.getSupportedCodes();
+    let response = await ExchangeService.getSupportedCodes();
     if (response.supported_codes) {
       if (response.supported_codes.length > 0) {
         let regionInfoList = [];
@@ -63,7 +62,7 @@ export default class CurrencyExchanger {
 
   async cacheAllExchangeRatesForRegion(regionCode) {
     let cachedData = [...this.cachedData];
-    let rates = await this.exchangeService.getAllExchangeRates(regionCode);
+    let rates = await ExchangeService.getAllExchangeRates(regionCode);
     cachedData.forEach(item => {
       if (regionCode === item.code) {
         item.exchangeRates = rates;
