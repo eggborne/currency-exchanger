@@ -4,21 +4,14 @@ export default class CurrencyExchanger {
   constructor() {
     this.defaultBaseRegion = 'USD';
     this.defaultTargetRegion = 'JPY';
-
-    window.addEventListener('load', async () => {
-      document.documentElement.style.setProperty('--actual-height', window.innerHeight + 'px');
-      let queryStarted = Date.now();
-      await this.cacheRegionInfo();
-      document.querySelector('footer > p').innerHTML = `${this.cachedData.length} currencies listed in ${Date.now() - queryStarted}ms`;
-      this.buildRegionDropdowns();
-      await this.cacheAllExchangeRatesForRegion(this.defaultBaseRegion);
-      this.cacheReverseRates(this.defaultBaseRegion);
-      this.setEventListeners();
-    });
   }
 
   get cachedData() {
     return JSON.parse(sessionStorage.getItem('currency_exchange_data'));
+  }
+
+  set cachedData(newCachedData) {
+    sessionStorage.setItem('currency_exchange_data', JSON.stringify(newCachedData));
   }
 
   // business logic
@@ -30,7 +23,7 @@ export default class CurrencyExchanger {
         item[property] = newValue;
       }
     });
-    sessionStorage.setItem('currency_exchange_data', JSON.stringify(newCachedData));
+    this.cachedData = newCachedData;
   }
 
   cachedEntryForRegion(regionCode) {
@@ -53,7 +46,7 @@ export default class CurrencyExchanger {
           let currencyName = codeArr[1];
           regionInfoList.push({ code, currencyName });
         });
-        sessionStorage.setItem('currency_exchange_data', JSON.stringify(regionInfoList));
+        this.cachedData = regionInfoList;
       } else {
         throw new Error(`Region call succeeded but returned empty array`);
       }
@@ -61,14 +54,14 @@ export default class CurrencyExchanger {
   }
 
   async cacheAllExchangeRatesForRegion(regionCode) {
-    let cachedData = [...this.cachedData];
+    let newCachedData = [...this.cachedData];
     let rates = await ExchangeService.getAllExchangeRates(regionCode);
-    cachedData.forEach(item => {
+    newCachedData.forEach(item => {
       if (regionCode === item.code) {
         item.exchangeRates = rates;
       }
     });
-    sessionStorage.setItem('currency_exchange_data', JSON.stringify(cachedData));
+    this.cachedData = newCachedData;
   }
 
   cacheReverseRates(regionCode) {
