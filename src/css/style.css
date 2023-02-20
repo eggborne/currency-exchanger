@@ -1,6 +1,7 @@
 :root {
   --actual-height: 100vh;
-  --header-height: 8rem;
+  --select-height: 8rem;
+  --header-height: 3.5rem;
   --header-color: #435b40;
   --accent-color: #506a4d;
   --bg-color: var(--header-color);
@@ -8,7 +9,7 @@
   --button-color: #8cd7737e;
   --dark-shade: #00000022;
   --form-width: 100%;
-  --form-height: calc(100vh - (var(--header-height) * 0));
+  --form-height: calc(var(--actual-height) - (var(--header-height) * 2));
   
 }
 
@@ -57,7 +58,7 @@ p {
 }
 
 header {
-  height: var(--header-height);
+  min-height: var(--header-height);
   background-color: var(--dark-shade);
   display: flex;
   align-items: center;
@@ -76,20 +77,15 @@ main {
   justify-content: center;
   align-items: center;
   flex-grow: 1;
-  padding: 2rem 0;
 }
 
 form {
   width: var(--form-width);
-  height: var(--form-height);
-  max-height: 84vh;
-  min-height: calc(var(--header-height) * 5);
+  flex-grow: 1;
   background-color: var(--header-color);
   display: grid;
   grid-template-columns: 1fr 0.25fr 0.25fr 1fr;
-  grid-template-rows: 6rem 1fr 0.8fr 0.8fr;
-  gap: 2rem 0;
-  padding: 2rem 0;
+  grid-template-rows: 1fr 1fr 0.6fr 1fr;
   border-radius: 0.75rem;
 }
 
@@ -112,7 +108,6 @@ form {
 
 .full-width-input > label {
   position: absolute;
-  translate: 0.5rem -50%;
   background-color: var(--header-color);
   font-size: 1.325rem;
   padding: 0.325rem;
@@ -124,14 +119,31 @@ form {
   text-shadow: none;
 }
 
+#amount-input-area {
+  align-self: center;
+  align-items: center;
+  height: 6rem;
+}
+
+#output-area {
+  align-self: center;
+  height: 6rem;
+}
+
+#amount-input-area > label {
+  top: 0;
+  translate: 0.5rem -50%;
+}
+
 #output-area > label {
   position: absolute;
   bottom: 0;
   right: 0;
   translate: -0.5rem 40%;
-  background-color: var(--header-color);
-  padding: 0.325rem;
-  line-height: 100%;
+}
+
+.full-width-input > input {
+  min-height: 100%;
 }
 
 #output-area > input {
@@ -143,15 +155,16 @@ form > .region-area {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 1rem 0.75rem;
+  padding: 5% 1%;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
-  gap: 1rem;
+  gap: 10%;
+  margin: 0 5%;
 }
 
 .region-area select {
   border-radius: 0.5rem;
-  max-height: var(--header-height);
+  max-height: var(--select-height);
   background-color: var(--accent-color);
   padding-left: 1rem;
 }
@@ -159,6 +172,14 @@ form > .region-area {
 .region-area label {
   text-align: center;
   font-size: 1.5rem;
+}
+
+#convert-button-area {
+  grid-column-end: span 4;
+  display: flex;
+  align-self: flex-start;
+  justify-content: center;
+  min-height: 5rem;
 }
 
 #target-area {
@@ -177,11 +198,10 @@ form button {
   grid-column-end: span 4;
   grid-row-start: 3;
   background-color: var(--button-color);
-  font-size: 2rem;
+  font-size: 1.5rem;
   align-self: center;
   justify-self: center;
-  padding: 0 15%;
-  height: 6rem;
+  padding: 6% 15%;
   transition: opacity 300ms ease;
 }
 
@@ -196,14 +216,14 @@ form input {
 .arrow-container {
   width: 100%;
 	height: 100%; 
-	margin: 0 calc(var(--header-height) * 0.325) calc(var(--header-height) * 0.325) 0;
+	margin: 0 calc(var(--select-height) * 0.325) calc(var(--select-height) * 0.325) 0;
   grid-column-start: 2;
   grid-column-end: span 2;
   grid-row-start: 2;
   display: none;
   align-items: center;
   justify-content: center;
-  translate: 0 calc(var(--header-height) * 0.25);
+  translate: 0 calc(var(--select-height) * 0.25);
   scale: 0.85;
 }
 
@@ -211,7 +231,7 @@ form input {
   position: relative;
   width: 0;
 	height: 0; 
-	border: calc(var(--header-height) * 0.325) solid;
+	border: calc(var(--select-height) * 0.325) solid;
 	border-color: 
   var(--bg-color)
   var(--bg-color)
@@ -226,8 +246,8 @@ form input {
 	top: 0.25rem; 
   right: 0.25rem;
 	display: block;
-  width: calc(var(--header-height) * 0.4);
-	height: calc(var(--header-height) * 0.325); 
+  width: calc(var(--select-height) * 0.4);
+	height: calc(var(--select-height) * 0.325); 
 	background-color: var(--bg-color);
 	transform: 
 		rotate(-45deg) 
@@ -246,11 +266,10 @@ form select {
   position: absolute;
   width: 100%;
   left: 0;
-  bottom: -40%;
-  font-size: 0.9rem;
-  opacity: 0.75;
-  font-weight: bold;
-  color: red;
+  bottom: -10%;
+  translate: 0 100%;
+  font-size: 1rem;
+  color: rgb(191, 67, 67);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -258,28 +277,32 @@ form select {
 }
 
 #server-message > p {
+  margin-block-start: 0;
+  margin-block-end: 0;
   font-size: inherit;
+  line-height: 100%;
 }
 
 footer {
-  height: 5rem;
+  height: var(--header-height);
   background-color: var(--dark-shade);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 0.5rem;
 }
 
 footer > p {
   font-weight: normal;
   opacity: 0.8;
   font-size: 0.9rem;
+  width: 33.3%;
+  padding: 0 2.5%;
 }
 
 #base-amount-input,
 #base-currency-input,
 #target-currency-input {
-  max-height: 5rem;
+  max-height: 6rem;
 }
 
 
@@ -287,7 +310,7 @@ footer > p {
   :root {
     --form-width: 85vmin;
     --form-height: 85vmin;
-    --header-height: 6rem;
+    --select-height: 6rem;
     --bg-color: #7f857f;
   }
   
@@ -295,6 +318,10 @@ footer > p {
   #base-currency-input,
   #target-currency-input {
     max-height: unset;
+  }
+
+  #base-amount-input {
+    max-height: 6rem;
   }
 
   h1 {
@@ -317,18 +344,16 @@ footer > p {
     margin: 0;
   }
 
-  .full-width-input > label {
-    font-size: 1.5rem;
-  }
-
   form {
-    padding: 4rem 4rem;
+    grid-template-rows: 22% 30% 28% 20%;
+    padding: 7vh;
   }
 
   form > .region-area {
     grid-column-end: span 1;
     border-radius: 0.5rem !important;
-    padding: 1rem 0;
+    padding: 10% 0;
+    margin: 0;
   }
 
   form button {
@@ -337,6 +362,17 @@ footer > p {
 
   #target-area {
     grid-column-start: 4;
+  }
+
+  #amount-input-area {
+    align-self: flex-start;
+  }
+  #output-area {
+    align-self: flex-end;
+  }
+
+  #footer {
+    height: 5rem;
   }
 
 }

@@ -68,7 +68,7 @@ export default class ExchangeService {
     let errorInfo = jsonResponse['extra-info'];
     document.getElementById('server-message').innerHTML = `
       <p>${functionName} ERROR ${statusCode}: ${errorType}</p>
-      <p>${errorInfo || '&nbsp;'}</p>
+      <p>${errorInfo && errorInfo}</p>
     `;
   }
 }
