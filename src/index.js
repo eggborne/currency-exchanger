@@ -2,6 +2,9 @@ import './css/style.css';
 import CurrencyExchanger from './js/CurrencyExchanger';
 
 window.addEventListener('load', async () => {
+  window.addEventListener('resize', e => {
+    document.documentElement.style.setProperty('--actual-height', window.innerHeight + 'px');
+  });
   let loadedAt = Date.now();
   document.documentElement.style.setProperty('--actual-height', window.innerHeight + 'px');
   let app = new CurrencyExchanger();

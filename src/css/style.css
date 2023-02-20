@@ -9,7 +9,7 @@
   --button-color: #8cd7737e;
   --dark-shade: #00000022;
   --form-width: 100%;
-  --form-height: calc(var(--actual-height) - (var(--header-height) * 2));
+  --form-height: calc(var(--actual-height) - (var(--header-height) * 3));
   
 }
 
@@ -20,12 +20,14 @@
 
 body {
   width: 100vw;
+  max-width: 100vw;
   height: var(--actual-height);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  font-weight: bold;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  /* font-weight: bold; */
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  justify-content: space-between;
   background-color: var(--bg-color);
   color: var(--text-color);
   text-shadow: 0 0 0.25rem rgba(0, 0, 0, 0.7);
@@ -58,7 +60,7 @@ p {
 }
 
 header {
-  min-height: var(--header-height);
+  height: var(--header-height);
   background-color: var(--dark-shade);
   display: flex;
   align-items: center;
@@ -67,8 +69,9 @@ header {
 }
 
 h1 {
-  line-height: 100%;
+  width: 100%;
   font-size: 1.8rem;
+  letter-spacing: 0.1rem;
 }
 
 main {
@@ -81,12 +84,13 @@ main {
 
 form {
   width: var(--form-width);
-  flex-grow: 1;
+  height: var(--form-height);
   background-color: var(--header-color);
   display: grid;
   grid-template-columns: 1fr 0.25fr 0.25fr 1fr;
   grid-template-rows: 1fr 1fr 0.6fr 1fr;
   border-radius: 0.75rem;
+  padding: 0 calc(var(--form-width) / 16);
 }
 
 .full-width-input {
@@ -94,7 +98,6 @@ form {
   border-radius: inherit;
   display: flex;
   grid-column-end: span 4;
-  margin: 0 1.5rem;
 }
 
 .full-width-input > input {
@@ -143,7 +146,7 @@ form {
 }
 
 .full-width-input > input {
-  min-height: 100%;
+  height: 100%;
 }
 
 #output-area > input {
@@ -159,7 +162,13 @@ form > .region-area {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
   gap: 10%;
-  margin: 0 5%;
+}
+
+form > #base-area {
+  margin-right: calc(var(--form-width) / 24);
+}
+form > #target-area {
+  margin-left: calc(var(--form-width) / 24);
 }
 
 .region-area select {
@@ -305,11 +314,27 @@ footer > p {
   max-height: 6rem;
 }
 
+header, footer {
+  position: fixed;
+  left: 0;
+  width: var(--form-width);
+  left: 50%;
+  translate: -50% 0;
+  z-index: 1;
+}
+header {
+  top: 0;
+}
+footer {
+  bottom: 0;
+}
+
 
 @media screen and (min-width: 768px) {
   :root {
-    --form-width: 85vmin;
-    --form-height: 85vmin;
+    --actual-height: 100vh;
+    --form-width: 60vw;
+    --form-height: calc(var(--actual-height) - (var(--header-height) * 4));
     --select-height: 6rem;
     --bg-color: #7f857f;
   }
@@ -325,15 +350,13 @@ footer > p {
   }
 
   h1 {
-    font-size: 2rem;
+    /* font-size: 2rem; */
   }
 
   header {
     background-color: var(--header-color);
-  }
-
-  main {
-    padding: 2rem;
+    border-bottom-left-radius: 1rem;
+    border-bottom-right-radius: 1rem;
   }
 
   .arrow-container {
@@ -341,12 +364,14 @@ footer > p {
   }
 
   .full-width-input {
-    margin: 0;
+
   }
 
   form {
     grid-template-rows: 22% 30% 28% 20%;
-    padding: 7vh;
+    padding: calc(var(--form-width) / 12);
+    height: var(--form-height);
+    flex-grow: unset;
   }
 
   form > .region-area {
@@ -357,7 +382,7 @@ footer > p {
   }
 
   form button {
-    font-size: 2rem;
+    padding: 3% 8%;
   }
 
   #target-area {
@@ -371,8 +396,14 @@ footer > p {
     align-self: flex-end;
   }
 
-  #footer {
-    height: 5rem;
+  footer {
+    height: 3rem;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+  }
+  footer > p {
+    text-align: center;
+    padding: 0;
   }
 
 }
